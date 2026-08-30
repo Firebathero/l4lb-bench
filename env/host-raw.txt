@@ -1,0 +1,293 @@
+##### COLLECTED 2026-08-30T12:24:47Z
+##### SECTION uname
+Linux <host> 6.18.33.2-microsoft-standard-WSL2 #1 SMP PREEMPT_DYNAMIC Thu Jun 18 21:54:43 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+kernel_release=6.18.33.2-microsoft-standard-WSL2
+Linux version 6.18.33.2-microsoft-standard-WSL2 (root@f1bbfb02316b) (gcc (GCC) 13.2.0, GNU ld (GNU Binutils) 2.41) #1 SMP PREEMPT_DYNAMIC Thu Jun 18 21:54:43 UTC 2026
+##### SECTION wsl-detect
+no WSLInterop
+WSL_DISTRO_NAME=Ubuntu-24.04
+total 0
+drwxr-xr-x 2 root root 200 Aug 30 08:24 .
+drwxr-xr-x 6 root root 120 Aug 30 08:24 ..
+lrwxrwxrwx 1 root root   9 Aug 30 08:24 <disk-serial-redacted> -> ../../sdd
+lrwxrwxrwx 1 root root   9 Aug 30 08:24 <disk-serial-redacted> -> ../../sdc
+6.18.33.2-microsoft-standard-WSL2
+##### SECTION lscpu
+Architecture:                            x86_64
+CPU op-mode(s):                          32-bit, 64-bit
+Address sizes:                           48 bits physical, 48 bits virtual
+Byte Order:                              Little Endian
+CPU(s):                                  32
+On-line CPU(s) list:                     0-31
+Vendor ID:                               AuthenticAMD
+Model name:                              AMD Ryzen 9 7950X3D 16-Core Processor
+CPU family:                              25
+Model:                                   97
+Thread(s) per core:                      2
+Core(s) per socket:                      16
+Socket(s):                               1
+Stepping:                                2
+BogoMIPS:                                8384.03
+Flags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid extd_apicid tsc_known_freq pni pclmulqdq ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy svm cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext perfctr_core ssbd ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves avx512_bf16 clzero xsaveerptr arat npt nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold avx512vbmi umip avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq rdpid fsrm
+Virtualization:                          AMD-V
+Hypervisor vendor:                       Microsoft
+Virtualization type:                     full
+L1d cache:                               512 KiB (16 instances)
+L1i cache:                               512 KiB (16 instances)
+L2 cache:                                16 MiB (16 instances)
+L3 cache:                                96 MiB (1 instance)
+NUMA node(s):                            1
+NUMA node0 CPU(s):                       0-31
+Vulnerability Gather data sampling:      Not affected
+Vulnerability Ghostwrite:                Not affected
+Vulnerability Indirect target selection: Not affected
+Vulnerability Itlb multihit:             Not affected
+Vulnerability L1tf:                      Not affected
+Vulnerability Mds:                       Not affected
+Vulnerability Meltdown:                  Not affected
+Vulnerability Mmio stale data:           Not affected
+Vulnerability Old microcode:             Not affected
+Vulnerability Reg file data sampling:    Not affected
+Vulnerability Retbleed:                  Not affected
+Vulnerability Spec rstack overflow:      Vulnerable: Safe RET, no microcode
+Vulnerability Spec store bypass:         Mitigation; Speculative Store Bypass disabled via prctl
+Vulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization
+Vulnerability Spectre v2:                Mitigation; Retpolines; IBPB conditional; IBRS_FW; STIBP always-on; RSB filling; PBRSB-eIBRS Not affected; BHI Not affected
+Vulnerability Srbds:                     Not affected
+Vulnerability Tsa:                       Vulnerable: No microcode
+Vulnerability Tsx async abort:           Not affected
+Vulnerability Vmscape:                   Not affected
+##### SECTION lscpu-parse-topology
+# The following is the parsable format, which can be fed to other
+# programs. Each different item in every column has an unique ID
+# starting usually from zero.
+# CPU,Core,Socket,Node,L1d:L1i:L2:L3
+0,0,0,0,0:0:0:0
+1,0,0,0,0:0:0:0
+2,1,0,0,1:1:1:0
+3,1,0,0,1:1:1:0
+4,2,0,0,2:2:2:0
+5,2,0,0,2:2:2:0
+6,3,0,0,3:3:3:0
+7,3,0,0,3:3:3:0
+8,4,0,0,4:4:4:0
+9,4,0,0,4:4:4:0
+10,5,0,0,5:5:5:0
+11,5,0,0,5:5:5:0
+12,6,0,0,6:6:6:0
+13,6,0,0,6:6:6:0
+14,7,0,0,7:7:7:0
+15,7,0,0,7:7:7:0
+16,8,0,0,8:8:8:0
+17,8,0,0,8:8:8:0
+18,9,0,0,9:9:9:0
+19,9,0,0,9:9:9:0
+20,10,0,0,10:10:10:0
+21,10,0,0,10:10:10:0
+22,11,0,0,11:11:11:0
+23,11,0,0,11:11:11:0
+24,12,0,0,12:12:12:0
+25,12,0,0,12:12:12:0
+26,13,0,0,13:13:13:0
+27,13,0,0,13:13:13:0
+28,14,0,0,14:14:14:0
+29,14,0,0,14:14:14:0
+30,15,0,0,15:15:15:0
+31,15,0,0,15:15:15:0
+##### SECTION cpuinfo-flags-of-interest
+  HAVE sse4_2
+  HAVE avx
+  HAVE avx2
+  HAVE avx512f
+  HAVE avx512bw
+  HAVE avx512dq
+  HAVE avx512vl
+  HAVE aes
+  HAVE pclmulqdq
+  HAVE rdtscp
+  HAVE constant_tsc
+  ---- invariant_tsc
+  ---- tsc_deadline_timer
+  ---- x2apic
+  HAVE hypervisor
+  HAVE pdpe1gb
+  HAVE clflushopt
+  ---- movdir64b
+  HAVE umip
+model_name:  AMD Ryzen 9 7950X3D 16-Core Processor
+cpu_cores_line: cpu cores	: 16
+siblings_line: siblings	: 32
+logical_cpus: 32
+##### SECTION cache
+  index0: level=1 type=Data size=32K ways=8 line=64 shared=0-1
+  index1: level=1 type=Instruction size=32K ways=8 line=64 shared=0-1
+  index2: level=2 type=Unified size=1024K ways=8 line=64 shared=0-1
+  index3: level=3 type=Unified size=98304K ways=16 line=64 shared=0-31
+##### SECTION numa
+/sys/devices/system/node/node0
+  node0 cpulist=0-31
+     Node 0 MemTotal:       15912664 kB
+     Node 0 MemFree:        13487076 kB
+##### SECTION memory
+MemTotal:       15912664 kB
+MemFree:        13487076 kB
+MemAvailable:   14830548 kB
+AnonHugePages:         0 kB
+HugePages_Total:       0
+HugePages_Free:        0
+HugePages_Rsvd:        0
+HugePages_Surp:        0
+Hugepagesize:       2048 kB
+##### SECTION hugepages-sysfs
+  hugepages-1048576kB: nr=0 free=0 resv=0
+  hugepages-2048kB: nr=0 free=0 resv=0
+  mounts:
+hugetlbfs /dev/hugepages hugetlbfs rw,nosuid,nodev,relatime,pagesize=2M 0 0
+  transparent_hugepage: always [madvise] never
+##### SECTION btf
+  /sys/kernel/btf/vmlinux PRESENT size=6677359
+autofs4
+br_netfilter
+bridge
+intel_rapl_common
+intel_rapl_msr
+ip_tables
+irqbypass
+kvm
+kvm_amd
+llc
+sch_fq_codel
+stp
+tun
+vmlinux
+  CONFIG check via /proc/config.gz:
+CONFIG_BPF=y
+CONFIG_BPF_EVENTS=y
+CONFIG_BPF_JIT=y
+CONFIG_BPF_JIT_ALWAYS_ON=y
+CONFIG_BPF_JIT_DEFAULT_ON=y
+CONFIG_BPF_LSM=y
+CONFIG_BPF_SYSCALL=y
+CONFIG_BPF_UNPRIV_DEFAULT_OFF=y
+CONFIG_CGROUP_BPF=y
+CONFIG_DEBUG_INFO_BTF=y
+CONFIG_DEBUG_INFO_BTF_MODULES=y
+CONFIG_HAVE_EBPF_JIT=y
+CONFIG_IP_VS=m
+CONFIG_IP_VS_DEBUG=y
+CONFIG_IP_VS_DH=m
+CONFIG_IP_VS_FTP=m
+CONFIG_IP_VS_LBLC=m
+CONFIG_IP_VS_LBLCR=m
+CONFIG_IP_VS_LC=m
+CONFIG_IP_VS_MH=m
+CONFIG_IP_VS_MH_TAB_INDEX=12
+CONFIG_IP_VS_NFCT=y
+CONFIG_IP_VS_NQ=m
+CONFIG_IP_VS_PE_SIP=m
+CONFIG_IP_VS_PROTO_AH=y
+CONFIG_IP_VS_PROTO_AH_ESP=y
+CONFIG_IP_VS_PROTO_ESP=y
+CONFIG_IP_VS_PROTO_SCTP=y
+CONFIG_IP_VS_PROTO_TCP=y
+CONFIG_IP_VS_PROTO_UDP=y
+CONFIG_IP_VS_RR=m
+CONFIG_IP_VS_SED=m
+CONFIG_IP_VS_SH=m
+CONFIG_IP_VS_SH_TAB_BITS=8
+CONFIG_IP_VS_TAB_BITS=12
+CONFIG_IP_VS_WLC=m
+CONFIG_IP_VS_WRR=m
+CONFIG_NETFILTER_XTABLES=y
+CONFIG_NETFILTER_XTABLES_COMPAT=y
+CONFIG_NETFILTER_XTABLES_LEGACY=y
+    /boot/config-6.18.33.2-microsoft-standard-WSL2 ABSENT
+##### SECTION bpf-runtime
+  unprivileged_bpf_disabled: 2
+  bpf_jit_enable: 1
+  bpf_jit_harden: n/a
+  bpffs present
+##### SECTION perf
+  perf_event_paranoid: 2
+  kptr_restrict: 1
+breakpoint
+cpu
+kprobe
+msr
+software
+tracepoint
+uprobe
+  nmi_watchdog: 0
+##### SECTION nics
+  iface=eth0 driver=hv_netvsc mtu=1280 oper=up mac=<mac-redacted> speed=10000
+     rx_queues=16 tx_queues=16
+  iface=lo driver=none mtu=65536 oper=unknown mac=<mac-redacted> speed=n/a
+     rx_queues=1 tx_queues=1
+  ip addr:
+     lo               UNKNOWN        127.0.0.1/8 10.255.255.254/32 ::1/128 
+     eth0             UP             <wsl-ipv4-redacted> <link-local-redacted> 
+##### SECTION pci-iommu-vfio
+  /sys/kernel/iommu_groups: 0 groups
+  no iommu= in /proc/cmdline
+  cmdline: initrd=\initrd.img WSL_ROOT_INIT=1 panic=-1 nr_cpus=32 hv_utils.timesync_implicit=1 console=hvc0 debug pty.legacy_count=0 WSL_ENABLE_CRASH_DUMP=1
+  vfio modules:
+    no vfio module loaded
+/lib/modules/6.18.33.2-microsoft-standard-WSL2/kernel/drivers/vfio
+/lib/modules/6.18.33.2-microsoft-standard-WSL2/kernel/drivers/vfio/vfio_iommu_type1.ko
+/lib/modules/6.18.33.2-microsoft-standard-WSL2/kernel/drivers/vfio/vfio.ko
+/lib/modules/6.18.33.2-microsoft-standard-WSL2/kernel/drivers/vfio/pci/vfio-pci-core.ko
+/lib/modules/6.18.33.2-microsoft-standard-WSL2/kernel/drivers/vfio/pci/vfio-pci.ko
+  uio modules:
+    no uio module loaded
+  /sys/bus/pci devices: 4
+##### SECTION modules-dir
+6.18.33.1-microsoft-standard-WSL2
+6.18.33.2-microsoft-standard-WSL2
+6.6.114.1-microsoft-standard-WSL2
+6.6.87.2-microsoft-standard-WSL2
+##### SECTION toolchain-versions
+  ABSENT   gcc
+  ABSENT   g++
+  ABSENT   clang
+  ABSENT   clang-14
+  ABSENT   clang-15
+  ABSENT   clang-16
+  ABSENT   clang-17
+  ABSENT   llvm-config
+  ABSENT   ld.lld
+  ABSENT   bpftool
+  ABSENT   pahole
+  ABSENT   perf
+  ABSENT   meson
+  ABSENT   ninja
+  ABSENT   cmake
+  ABSENT   make
+  ABSENT   pkg-config
+  PRESENT  python3 :: Python 3.12.3
+  ABSENT   go
+  ABSENT   rustc
+  PRESENT  git :: git version 2.43.0
+  PRESENT  curl :: curl 8.5.0 (x86_64-pc-linux-gnu) libcurl/8.5.0 OpenSSL/3.0.13 zlib/1.3 brotli/1.1.0 zstd/1.5.5 libidn2/2.3.7 libpsl/0.21.2 (+libidn2/2.3.7) libssh/0.10.6/openssl/zlib nghttp2/1.59.0 librtmp/2.3 OpenLDAP/2.6.7
+  ABSENT   ethtool
+  ABSENT   lspci
+  ABSENT   numactl
+  ABSENT   libbpf
+  PRESENT  tc :: Option "--version" is unknown, try "tc -help".
+  PRESENT  ip :: Option "-version" is unknown, try "ip -help".
+  ABSENT   nasm
+  libbpf via pkg-config: pkg-config or libbpf absent
+  libbpf .so on system:
+	libbpf.so.1 (libc6,x86-64) => /lib/x86_64-linux-gnu/libbpf.so.1
+  bcc python module:
+    python3 bcc module ABSENT
+  dpdk pkg-config:
+    libdpdk ABSENT
+##### SECTION installed-dev-packages
+gcc-14-base 14.2.0-4ubuntu2~24.04.1
+libbpf1 1:1.3.0-2build2
+libelf1t64 0.190-1.1ubuntu0.1
+##### SECTION virt
+wsl
+hypervisor
+  hypervisor flag present (virtualised CPU)
+##### SECTION END

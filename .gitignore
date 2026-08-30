@@ -1,0 +1,12 @@
+# Upstream sources. 1.1 GB of third-party code at pinned SHAs.
+# Every clone URL and commit SHA is recorded in notes/repos.md.
+repos/
+
+# Third-party paper PDFs. Not redistributed here.
+# papers/README.md records the source URL, byte size and verified title
+# for all nine.
+papers/*.pdf
+
+# Experiment output.
+harness/results/*
+!harness/results/.gitkeep

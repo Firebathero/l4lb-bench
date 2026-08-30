@@ -1,0 +1,35 @@
+clone_date_utc=2026-08-30T12:20:06Z
+=========================================================== katran
+  sha=e6f781e09144641967487f696a9a9f2e2975f4ef branch=main describe=e6f781e size=9.9M head_commit_date=2026-08-29T09:33:30-07:00 submodules=none
+=========================================================== cilium
+  sha=fa4c8b8e192e5d18d0baed648d977c766afea60a branch=main describe=fa4c8b8e size=465M head_commit_date=2026-08-30T08:47:33+00:00 submodules=none
+=========================================================== dpvs
+  sha=4582d20dc6cc16ab123c3b72e245e3ec9a47965b branch=master describe=v1.10.2 size=19M head_commit_date=2025-06-23T09:57:04+08:00 submodules=none
+=========================================================== dpdk
+  sha=d55ccd4e6de64e3f797f60de9e81f1d60f849775 branch=main describe=d55ccd4 size=153M head_commit_date=2026-08-24T17:51:07+02:00 submodules=none
+=========================================================== pktgen-dpdk
+  sha=1f052ac714168b29955e6e9bd846ab4073eb94b2 branch=main describe=1f052ac size=22M head_commit_date=2026-07-28T07:12:48-05:00 submodules=none
+=========================================================== trex-core
+  sha=27e0153b5ff833c51d48f1625ace979a2868d8a0 branch=master describe=27e0153 size=418M head_commit_date=2025-11-05T15:55:45+02:00 submodules=none
+=========================================================== anchorhash-cpp
+  sha=3ef98f05cbfe1a449f92b97cdfb1363317db85e1 branch=main describe=3ef98f0 size=304K head_commit_date=2021-12-05T13:09:29+02:00 submodules=none
+=========================================================== anchorhash-go
+  sha=32e170e5fb77e2e735aa7a984a7317a255cb18dd branch=main describe=32e170e size=744K head_commit_date=2020-11-19T11:24:00+02:00 submodules=none
+=========================================================== anchorhash-py
+  sha=75d8cfc99565775bfa5dc698853605ead903d073 branch=main describe=75d8cfc size=228K head_commit_date=2020-11-29T16:24:03+02:00 submodules=none
+=========================================================== beamer-ctrl
+  sha=8436afdc6b15d7eb36191075b783b276c26272c4 branch=master describe=8436afd size=584K head_commit_date=2018-02-22T01:23:07+02:00 submodules=none
+=========================================================== beamer-click
+  sha=a11c05f2e610e51cbcfd0b29c0ff88c7f6234db8 branch=master describe=a11c05f size=332K head_commit_date=2018-02-22T02:49:09+02:00 submodules=none
+=========================================================== beamer-p4
+  sha=d6b6148a9c83aee03362094e0084b81cdfd20f53 branch=master describe=d6b6148 size=208K head_commit_date=2018-02-22T02:33:36+02:00 submodules=none
+=========================================================== beamer-mod
+  sha=146c350349b83f2a491fa543fd490696d5ed70a4 branch=master describe=146c350 size=352K head_commit_date=2018-02-25T17:24:12+02:00 submodules=none
+=========================================================== beamer-doc
+  sha=188a6f51f03d7062720bffa4a4ef370e7917b804 branch=master describe=188a6f5 size=200K head_commit_date=2018-03-09T19:18:07+02:00 submodules=none
+=========================================================== beamer-clickityclack
+  sha=3c54d42114d6dc45755eaa351381ccbb5173e96a branch=master describe=3c54d42 size=396K head_commit_date=2018-02-22T02:16:28+02:00 submodules=none
+=========================================================== DONE
+/dev/sde       1007G   18G  939G   2% /
+1.1G	/home/<user>/l4lb-bench/repos
+TSV written to /home/<user>/l4lb-bench/notes/.repos.tsv
