@@ -24,6 +24,7 @@ source URL for all nine papers.
 | `notes/consistent-hashing.md` | **measured comparison** of Maglev, MaglevV2, AnchorHash and dpvs conhash: disruption, balance, update cost, cycles per lookup |
 | `notes/data/ch_bench.csv` | raw results, 55 rows |
 | `notes/pmu-validation.md` | proof the hardware counters on this host are proportional and repeatable |
+| `notes/target-host.md` | **what machine to buy next**: AF_XDP zero-copy support per NIC driver read from kernel source, and what each provisioning option unblocks |
 | `notes/datapaths.md` | per-packet fast path for katran, cilium and dpvs, cited by `file:line` against the pinned SHAs |
 | `notes/build-requirements.md` | documented build sequence and declared dependencies per repo, plus the DPDK version conflicts |
 | `notes/repos.md` | every cloned repo with commit SHA, branch and clone date |
@@ -63,6 +64,10 @@ no generator/DUT separation. Details and a per-repo gap list in `env/host.md`.
 That work needs different hardware. dpvs in particular cannot be measured at all
 on this machine, since it is DPDK-only, so the executable comparison is
 currently katran against cilium plus algorithm-level results for everything else.
+
+`notes/target-host.md` says what to provision. Short version: AWS ENA and Azure
+MANA cannot do AF_XDP zero-copy, GCP gve and virtio_net can, and only bare metal
+gives DPDK, dpvs, and a PMU with uncore counters.
 
 ## What you can change
 
