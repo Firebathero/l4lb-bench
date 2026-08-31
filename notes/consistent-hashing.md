@@ -247,7 +247,16 @@ a no-op node finaliser the harness must pass to `conhash_fini`.
 
 ## Environment
 
-Built and run in WSL2 `Ubuntu-22.04` as root, g++ 11 at `-O2 -msse4.2`, on the
-host in `env/host.md`. Ubuntu-22.04 rather than Ubuntu-24.04 only because it
-runs as root and could install `build-essential` without an interactive
-password; the kernel is shared between the two distros.
+Host as described in `env/host.md`. Built at `-O2 -msse4.2`.
+
+Produced twice, on two different compilers:
+
+| | distro | compiler |
+|---|---|---|
+| original run | WSL2 `Ubuntu-22.04` | g++ 11.4 |
+| independent reproduction | WSL2 `Ubuntu-24.04` | g++ 13.3 |
+
+Both produce **identical values in every deterministic column**, including the
+per-lookup instruction counts. So the results are not an artefact of a
+particular compiler version. The two distros share one WSL2 kernel, so this
+isolates the toolchain, not the kernel.
