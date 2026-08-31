@@ -10,9 +10,17 @@ not reimplement any algorithm.
 
 ```bash
 make            # needs g++ and gcc, nothing else
+make verify     # 23 invariant checks, exits non-zero on failure
 make run        # writes ../results/ch_bench.csv
-./ch_bench 1000000   # key count, default 1000000
+./ch_bench 1000000        # key count, default 1000000
+./ch_bench verify 200000  # invariant checks at a chosen key count
 ```
+
+`make verify` is the one to run after changing anything. It checks per-key, not
+statistically, that removals and restores are exact, that no key is left
+unassigned or pointing at a removed backend, and that disruption never falls
+below the unavoidable minimum. A contaminated restore would silently corrupt
+every trial after the first.
 
 Results committed at `../../notes/data/ch_bench.csv`, analysis in
 `../../notes/consistent-hashing.md`.

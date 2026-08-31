@@ -30,7 +30,7 @@ source URL for all nine papers.
 | `notes/repos.md` | every cloned repo with commit SHA, branch and clone date |
 | `notes/tooling.md` | measurement tooling per category, present or absent |
 | `env/host.md` | host capability report and per-repo list of unmet requirements |
-| `harness/run/` | the benchmark driver, see `harness/run/README.md` |
+| `harness/run/` | the benchmark driver plus `make verify`, 23 invariant checks |
 | `harness/collect/` | PMU readers built on `perf_event_open(2)` |
 | `papers/README.md` | nine papers, source URL and title verification |
 
@@ -49,6 +49,9 @@ From `notes/consistent-hashing.md`, on real implementations at 1M keys:
   Maglev's 8, because every lookup is an `snprintf`, an MD5 and an rbtree walk.
 - **AnchorHash updates in constant time**, about 10,000x cheaper than
   regenerating a Maglev ring, which has no incremental update at all.
+- Instruction counts are exact and repeat identically across runs; cycle counts
+  carry up to 34% run-to-run spread on this host, so only large cycle gaps are
+  claimed. `notes/consistent-hashing.md` records one claim withdrawn on that basis.
 - **katran's `MaglevHash` silently ignores backend weights.** It applies them on
   the first pass then resets every weight to 1 (`MaglevHash.cpp:48-61`), so on a
   65537-entry ring the effect is swamped. `MaglevHashV2` honours them exactly.

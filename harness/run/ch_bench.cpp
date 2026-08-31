@@ -330,8 +330,155 @@ static Row run_conhash(int n, bool skewed, const std::vector<uint64_t>& keys) {
   return r;
 }
 
+// ------------------------------------------------------------- invariants
+// `./ch_bench verify` checks the properties the benchmark's numbers depend on.
+// The critical one is restore-exactness: each implementation is measured by
+// removing a backend and putting it back, repeatedly. If a restore is not
+// exact, every trial after the first measures a drifted structure and the
+// averaged results are contaminated.
+
+static int fails = 0;
+static void check(bool cond, const char* what) {
+  printf("  [%s] %s\n", cond ? "PASS" : "FAIL", what);
+  if (!cond) fails++;
+}
+
+static int run_invariants(const std::vector<uint64_t>& keys) {
+  const int n = 32;
+  const int victim = 7;
+  const uint32_t ring_size = 65537;
+
+  auto no_unassigned = [](const std::vector<int>& a) {
+    return std::none_of(a.begin(), a.end(), [](int v) { return v < 0; });
+  };
+  auto in_range = [&](const std::vector<int>& a) {
+    return std::all_of(a.begin(), a.end(),
+                       [&](int v) { return v >= 0 && v < n; });
+  };
+  auto none_on = [&](const std::vector<int>& a, int b) {
+    return std::none_of(a.begin(), a.end(), [&](int v) { return v == b; });
+  };
+  // every key that sat on the removed backend must have moved
+  auto all_victims_moved = [&](const std::vector<int>& before,
+                               const std::vector<int>& after, int b) {
+    for (size_t i = 0; i < before.size(); i++)
+      if (before[i] == b && after[i] == b) return false;
+    return true;
+  };
+
+  printf("== katran maglev (ring %u, %d backends) ==\n", ring_size, n);
+  {
+    auto ch = katran::CHFactory::make(katran::HashFunction::Maglev);
+    auto ring = ch->generateHashRing(endpoints(n, false), ring_size);
+    check(ring.size() == ring_size, "ring has exactly ring_size entries");
+    check(no_unassigned(ring), "ring fully populated, no -1 slots left");
+    check(in_range(ring), "every ring entry is a valid backend id");
+    auto ring2 = ch->generateHashRing(endpoints(n, false), ring_size);
+    check(ring == ring2, "ring generation is deterministic");
+
+    std::vector<int> before(keys.size());
+    for (size_t i = 0; i < keys.size(); i++) before[i] = ring[keys[i] % ring_size];
+    check(no_unassigned(before) && in_range(before), "all keys assigned in range");
+
+    auto red = endpoints(n, false);
+    red.erase(red.begin() + victim);
+    auto ring3 = ch->generateHashRing(red, ring_size);
+    std::vector<int> after(keys.size());
+    for (size_t i = 0; i < keys.size(); i++) after[i] = ring3[keys[i] % ring_size];
+    check(none_on(after, victim), "no key maps to the removed backend");
+    check(all_victims_moved(before, after, victim), "every key on the victim moved");
+    double ideal = 0;
+    double d = disruption_of(before, after, victim, ideal);
+    check(d >= ideal - 1e-12, "disruption >= ideal (excess is non-negative)");
+    // maglev rebuilds from scratch, so "restore" is regenerating the full set
+    auto ring4 = ch->generateHashRing(endpoints(n, false), ring_size);
+    check(ring4 == ring, "regeneration after removal reproduces the original ring");
+  }
+
+  printf("== anchorhash (%d backends) ==\n", n);
+  {
+    AnchorHashQre ah((uint32_t)n, (uint32_t)n);
+    std::vector<int> before(keys.size());
+    for (size_t i = 0; i < keys.size(); i++)
+      before[i] = (int)ah.ComputeBucket(keys[i], AH_SEED);
+    check(no_unassigned(before) && in_range(before), "all keys assigned in range");
+
+    std::vector<int> again(keys.size());
+    for (size_t i = 0; i < keys.size(); i++)
+      again[i] = (int)ah.ComputeBucket(keys[i], AH_SEED);
+    check(before == again, "lookup is stateless and repeatable");
+
+    ah.UpdateRemoval((uint32_t)victim);
+    std::vector<int> after(keys.size());
+    for (size_t i = 0; i < keys.size(); i++)
+      after[i] = (int)ah.ComputeBucket(keys[i], AH_SEED);
+    check(none_on(after, victim), "no key maps to the removed backend");
+    check(all_victims_moved(before, after, victim), "every key on the victim moved");
+    double ideal = 0;
+    double d = disruption_of(before, after, victim, ideal);
+    check(d >= ideal - 1e-12, "disruption >= ideal");
+    check(std::abs(d - ideal) < 1e-12, "minimally disruptive: excess is exactly 0");
+
+    ah.UpdateNewBucket();
+    std::vector<int> restored(keys.size());
+    for (size_t i = 0; i < keys.size(); i++)
+      restored[i] = (int)ah.ComputeBucket(keys[i], AH_SEED);
+    check(restored == before, "RESTORE IS EXACT: UpdateNewBucket undoes UpdateRemoval");
+  }
+
+  printf("== dpvs conhash (%d backends, %u replicas) ==\n", n, DPVS_REPLICA);
+  {
+    std::vector<node_s> nodes(n);
+    struct conhash_s* ch = conhash_init(NULL);
+    for (int i = 0; i < n; i++) {
+      char iden[64];
+      snprintf(iden, sizeof(iden), "backend-%d", i);
+      conhash_set_node(&nodes[i], iden, DPVS_REPLICA);
+      nodes[i].data = (void*)(intptr_t)(i + 1);
+      conhash_add_node(ch, &nodes[i]);
+    }
+    auto assign = [&](std::vector<int>& out) {
+      for (size_t i = 0; i < keys.size(); i++) {
+        char buf[32];
+        snprintf(buf, sizeof(buf), "%llu", (unsigned long long)keys[i]);
+        const struct node_s* nd = conhash_lookup(ch, buf);
+        out[i] = nd ? (int)(intptr_t)nd->data - 1 : -1;
+      }
+    };
+    std::vector<int> before(keys.size()), after(keys.size()), restored(keys.size());
+    assign(before);
+    check(no_unassigned(before) && in_range(before),
+          "all keys assigned in range (no NULL lookups)");
+
+    conhash_del_node(ch, &nodes[victim]);
+    assign(after);
+    check(none_on(after, victim), "no key maps to the removed backend");
+    check(all_victims_moved(before, after, victim), "every key on the victim moved");
+    double ideal = 0;
+    double d = disruption_of(before, after, victim, ideal);
+    check(d >= ideal - 1e-12, "disruption >= ideal");
+    check(std::abs(d - ideal) < 1e-12, "minimally disruptive: excess is exactly 0");
+
+    conhash_add_node(ch, &nodes[victim]);
+    assign(restored);
+    check(restored == before, "RESTORE IS EXACT: re-adding the node rebuilds the same ring");
+    conhash_fini(ch, node_fini_noop);
+  }
+
+  printf("\n%s: %d check(s) failed\n", fails ? "FAILED" : "OK", fails);
+  return fails ? 1 : 0;
+}
+
 // ---------------------------------------------------------------------- main
 int main(int argc, char** argv) {
+  if (argc > 1 && strcmp(argv[1], "verify") == 0) {
+    size_t VK = (argc > 2) ? strtoul(argv[2], nullptr, 10) : 200000;
+    std::vector<uint64_t> vkeys(VK);
+    for (size_t i = 0; i < VK; i++) vkeys[i] = splitmix64(KEY_SEED + i);
+    printf("invariant check, %zu keys\n\n", VK);
+    return run_invariants(vkeys);
+  }
+
   size_t K = (argc > 1) ? strtoul(argv[1], nullptr, 10) : 1000000;
 
   std::vector<uint64_t> keys(K);

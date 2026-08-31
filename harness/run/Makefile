@@ -29,7 +29,7 @@ CXX_OBJS := $(BUILD)/ch_bench.o \
             $(patsubst %,$(BUILD)/%.o,$(notdir $(basename $(KATRAN_SRC) $(ANCHOR_SRC))))
 C_OBJS   := $(patsubst %,$(BUILD)/%.o,$(notdir $(basename $(CONHASH_SRC))))
 
-.PHONY: all run clean
+.PHONY: all run verify clean
 all: ch_bench
 
 ch_bench: $(CXX_OBJS) $(C_OBJS)
@@ -57,6 +57,9 @@ run: ch_bench
 	mkdir -p ../results
 	./ch_bench 1000000 > ../results/ch_bench.csv
 	@echo "wrote ../results/ch_bench.csv"
+
+verify: ch_bench
+	./ch_bench verify
 
 clean:
 	rm -rf $(BUILD) ch_bench

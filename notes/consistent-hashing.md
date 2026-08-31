@@ -109,10 +109,34 @@ Cycles and instructions per lookup, from the PMU:
 | dpvs conhash | 868 - 1605 | ~2300 |
 
 Maglev is a modulo and one array index, and it is flat across table size and
-backend count. AnchorHash executes about 4x the instructions but in fewer
-cycles, so it is extracting more instruction-level parallelism; its inner loop
-is `crc32c` on SSE4.2 plus a short walk that usually terminates immediately when
-no buckets have been removed.
+backend count. AnchorHash executes about 4x the instructions; its inner loop is
+`crc32c` on SSE4.2 plus a short walk that usually terminates immediately when no
+buckets have been removed.
+
+### Measurement noise, and what it does and does not support
+
+Five repeat runs at 300k keys, all 55 configurations:
+
+- **instruction counts are identical in every run of every configuration.** They
+  are an exact retired-instruction count, not a sample.
+- **cycle counts are not.** Median run-to-run spread 1.6%, maximum **33.6%**.
+
+So the instruction column is exact and the cycle column carries real variance.
+Conclusions have to be sized accordingly:
+
+| claim | supported? |
+|---|---|
+| conhash costs ~100x more per lookup than Maglev | **yes**, the gap is 1000 vs 8, far outside 34% |
+| Maglev is flat across table size and backend count | **yes**, 8.00 instructions everywhere |
+| AnchorHash executes ~4x Maglev's instructions | **yes**, 34.00 vs 8.00 exactly |
+| AnchorHash is *cheaper in cycles* than Maglev | **no** |
+
+That last one was claimed in an earlier draft of this file and is withdrawn.
+AnchorHash measures 7.08-8.04 cycles across repeats and Maglev measures
+7.99-8.67; the ranges overlap. On this host the two cannot be separated on
+cycles, only on instructions. Distinguishing them would need a machine with
+precise sampling and uncore counters, which `env/host.md` records this one as
+lacking (`max_precise = 0`).
 
 dpvs conhash is two orders of magnitude more expensive because every lookup is
 an `snprintf`, an MD5 digest, and a red-black tree descent. The `snprintf` is
@@ -181,11 +205,39 @@ Does not establish:
 - anything about cilium's Maglev implementation. It is Go and depends on `hive/cell`, `workerpool`, `pflag`, `loadbalancer`, `lock` and `murmur3`; it was not built. Only its table size (16381) was carried across, applied to katran's implementation.
 - anything about dpvs's own `mh` scheduler (`ip_vs_mh.c`). It does not separate from DPDK, so only its table size (4093) was carried across.
 
+## Invariants checked
+
+`./ch_bench verify` asserts the properties these numbers depend on. All 23 pass.
+
+The one that matters most is **restore exactness**. Each implementation is
+measured by removing a backend and putting it back, up to 8 times. If a restore
+were not exact, every trial after the first would measure a drifted structure
+and the averages would be quietly wrong. Verified per-key, not statistically:
+
+- AnchorHash: `UpdateNewBucket()` reproduces the assignment vector of all
+  200,000 keys exactly after `UpdateRemoval()`
+- dpvs conhash: re-adding the node rebuilds a ring that reproduces the
+  assignment vector exactly
+- katran Maglev: regeneration from the full endpoint set reproduces the original
+  ring byte for byte
+
+Also asserted: the Maglev ring is fully populated with no `-1` slots left; ring
+generation is deterministic; every key is assigned to an in-range backend; no
+key maps to the removed backend afterwards; every key that sat on the removed
+backend actually moved; and disruption is never below ideal. For AnchorHash and
+conhash the excess is checked to be **exactly** zero per key, not merely zero
+after rounding.
+
+End-to-end, two full runs produce byte-identical output in every non-timing
+column, and the committed `data/ch_bench.csv` reproduces exactly from a fresh
+1M-key run.
+
 ## Reproducing
 
 ```bash
 cd harness/run
 make            # needs g++ and gcc only
+make verify     # 23 invariant checks
 make run        # writes ../results/ch_bench.csv
 ```
 
