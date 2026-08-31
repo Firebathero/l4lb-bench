@@ -10,3 +10,8 @@ papers/*.pdf
 # Experiment output.
 harness/results/*
 !harness/results/.gitkeep
+
+# Build artefacts.
+harness/run/build/
+harness/run/ch_bench
+__pycache__/
