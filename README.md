@@ -22,6 +22,7 @@ source URL for all nine papers.
 | path | what is in it |
 |---|---|
 | `notes/consistent-hashing.md` | **measured comparison** of Maglev, MaglevV2, AnchorHash and dpvs conhash: disruption, balance, update cost, cycles per lookup |
+| `notes/xdp-datapath.md` | **per-packet cost of katran's real XDP datapath**, measured in-kernel with BPF_PROG_TEST_RUN, no NIC required |
 | `notes/data/ch_bench.csv` | raw results, 55 rows |
 | `notes/pmu-validation.md` | proof the hardware counters on this host are proportional and repeatable |
 | `notes/target-host.md` | **what machine to buy next**: AF_XDP zero-copy support per NIC driver read from kernel source, and what each provisioning option unblocks |
@@ -52,6 +53,7 @@ From `notes/consistent-hashing.md`, on real implementations at 1M keys:
 - Instruction counts are exact and repeat identically across runs; cycle counts
   carry up to 34% run-to-run spread on this host, so only large cycle gaps are
   claimed. `notes/consistent-hashing.md` records one claim withdrawn on that basis.
+- **katran's XDP datapath costs ~300 ns per packet** net of a measured baseline, flat from 1 to 512 backends, and commits **192 MiB of BPF map memory at load time** before any traffic. See `notes/xdp-datapath.md`.
 - **katran's `MaglevHash` silently ignores backend weights.** It applies them on
   the first pass then resets every weight to 1 (`MaglevHash.cpp:48-61`), so on a
   65537-entry ring the effect is swamped. `MaglevHashV2` honours them exactly.

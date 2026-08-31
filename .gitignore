@@ -15,3 +15,5 @@ harness/results/*
 harness/run/build/
 harness/run/ch_bench
 __pycache__/
+harness/run/bpf/build/
+harness/run/bpf/xdp_bench
